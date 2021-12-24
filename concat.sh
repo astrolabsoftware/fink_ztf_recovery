@@ -30,7 +30,7 @@ for atar in ${list_of_tar[@]}; do
     echo "data will be stored at $out"
 
     # merge files
-    mpirun -n $NPROC python merge_avro_to_parquet_mpi.py -i $folder -o $out > /spark-dir/logs/$NIGHT
+    mpirun --allow-run-as-root -n $NPROC python merge_avro_to_parquet_mpi.py -i $folder -o $out > /spark-dir/logs/$NIGHT
 
     # remove the initial tar.gz
     rm $atar
