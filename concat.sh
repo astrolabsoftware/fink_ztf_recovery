@@ -7,7 +7,7 @@ NPROC=16
 cd /spark-dir/tars
 
 # list the ztf_public folders
-list_of_tar=`/usr/bin/ls -1 | grep *.tar.gz`
+list_of_tar=`/usr/bin/ls -1 | grep .tar.gz`
 
 for atar in ${list_of_tar[@]}; do
     # Name for the temporary folder to decompress data
