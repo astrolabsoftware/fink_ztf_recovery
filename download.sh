@@ -18,5 +18,5 @@ list_of_files=`/usr/bin/ls -1 uris | grep .txt`
 
 for file in ${list_of_files[@]}; do
     #echo $file
-    aria2c -x16 -s10 -i $file -d /spark-dir/tars
+    aria2c -x16 -s10 -i $file -d /spark-dir/tars > logs/$file
 done

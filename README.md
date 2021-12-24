@@ -4,7 +4,7 @@ In case things go wrong, keep breathing, and follow instructions. Requirements:
 
 - openmpi
 - aria2c
-- pandas, numpy, fink-client, fastavro, mpi4py...
+- pandas, pyarrow, numpy, fink-client, fastavro, mpi4py...
 
 and have a good internet connection!
 
