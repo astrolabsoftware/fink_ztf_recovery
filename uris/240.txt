@@ -1,0 +1,5 @@
+https://ztf.uw.edu/alerts/public/ztf_public_20210117.tar.gz
+https://ztf.uw.edu/alerts/public/ztf_public_20210116.tar.gz
+https://ztf.uw.edu/alerts/public/ztf_public_20210115.tar.gz
+https://ztf.uw.edu/alerts/public/ztf_public_20210114.tar.gz
+https://ztf.uw.edu/alerts/public/ztf_public_20210113.tar.gz
