@@ -14,7 +14,8 @@ for atar in ${list_of_tar[@]}; do
     folder=$(echo $atar | cut -d'.' -f1)
 
     # decompress data
-    tar -zxf $atar --one-top-level
+    mkdir -p $folder
+    tar -zxf $atar -C $folder
 
     # Get YYYY/MM/DD
     NIGHT="$(echo $folder | cut -d'_' -f3)"
