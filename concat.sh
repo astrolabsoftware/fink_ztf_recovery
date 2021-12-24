@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+source ~/.bash_profile
+
 # Number of processors to use for mpi
 NPROC=16
 
