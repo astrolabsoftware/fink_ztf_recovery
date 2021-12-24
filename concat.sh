@@ -4,6 +4,8 @@ set -e
 # Number of processors to use for mpi
 NPROC=16
 
+cd /spark-dir/tars
+
 # list the ztf_public folders
 list_of_tar=`/usr/bin/ls -1 | grep *.tar.gz`
 
@@ -20,7 +22,7 @@ for atar in ${list_of_tar[@]}; do
     MONTH=${NIGHT:4:2}
     DAY=${NIGHT:6:2}
 
-    out=ztf_alerts/raw/year=$YEAR/month=$MONTH/day=$DAY
+    out=/spark-dir/ztf_alerts/raw/year=$YEAR/month=$MONTH/day=$DAY
     mkdir -p $out
     echo "data will be stored at $out"
 
@@ -28,7 +30,7 @@ for atar in ${list_of_tar[@]}; do
     mpirun -n $NPROC python merge_avro_to_parquet_mpi.py -i $folder -o $out > logs/$NIGHT
 
     # remove the initial tar.gz
-    # rm $atar
+    rm $atar
 
     # Remove the initial folder to avoid filling disks
     # ideally check the processing goes OK before
