@@ -17,7 +17,7 @@ for atar in ${list_of_tar[@]}; do
 
     # decompress data
     mkdir -p $folder
-    tar -zxf $atar -C $folder
+    pigz -dc -p 16 $atar | tar xf - -C $folder
 
     # Get YYYY/MM/DD
     NIGHT="$(echo $folder | cut -d'_' -f3)"
@@ -37,5 +37,5 @@ for atar in ${list_of_tar[@]}; do
 
     # Remove the initial folder to avoid filling disks
     # ideally check the processing goes OK before
-    # rm -rf $folder
+    rm -rf $folder
 done
