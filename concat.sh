@@ -19,6 +19,8 @@ for atar in ${list_of_tar[@]}; do
     mkdir -p $folder
     if ! pigz -dc -p 4 $atar | tar xf - -C $folder; then
         echo "Failed $atar"
+        rm -rf $folder
+        mv $atar /spark-dir/bad/
         continue
     fi
 
