@@ -15,9 +15,12 @@ for atar in ${list_of_tar[@]}; do
     # Name for the temporary folder to decompress data
     folder=$(echo $atar | cut -d'.' -f1)
 
-    # decompress data
+    # decompress data -- skip if untar fails
     mkdir -p $folder
-    pigz -dc -p 16 $atar | tar xf - -C $folder
+    if ! pigz -dc -p 4 $atar | tar xf - -C $folder; then
+        echo "Failed $atar"
+        continue
+    fi
 
     # Get YYYY/MM/DD
     NIGHT="$(echo $folder | cut -d'_' -f3)"
