@@ -53,7 +53,7 @@ For doing all these steps, use the wrapper:
 
 The wrapper will look for all `ztf_public*.tar.gz` files, and do the job. To speed-up the merge operation, we use `mpi` under the hood. The script will use by default 16 cores -- leading to a writing throughput of about 170 MB/s.
 
-As decompression and merge are done one after the other, and file by file, we shall obtain a rate of about 55 MB/s. In practice, we observe twice slower (why?). Note that it would have been perhaps wiser to parallelize the decompression step first (by parallelizing folders), and then parallelize the merging step. Improvement for the future!
+As decompression and merge are done one after the other, and file by file, we shall obtain a rate of about 55 MB/s. In practice, we observe twice slower (why?). Note that it would have been perhaps wiser to parallelize the decompression step first (by parallelizing folders), and then parallelize the merging step (that way we would easily reach +300 MB/s for decompression, that is a total rate at +100 MB/s). Improvement for the future!
 
 ## Summary
 
@@ -62,4 +62,4 @@ As decompression and merge are done one after the other, and file by file, we sh
 | Download | 5 nights | 300 MB/s | 5.5 hours |
 | decompress+merge | 1 night | 33 MB/s | 42 hours |
 
-So we could download and rebuild the whole alert data for 2020 and 2021 in about 2 full days.
+So we could download and rebuild the whole alert data for 2020 and 2021 in about 2 full days. Note that with a wiser parallelisation of the decompression step, we could reach +100 MB/s, that is a total time divided by more than 2.
