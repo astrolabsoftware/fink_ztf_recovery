@@ -85,8 +85,6 @@ with open(filelist[0], mode='rb') as file_data:
     file_data.seek(0)
     data = reader(file_data)
     schema = data.writer_schema
-
-#schema = readschemafromavrofile(filelist[0])
 schema = parse_schema(schema)
 
 nsplit = int(len(filelist) / NFILE) + 1
@@ -94,21 +92,15 @@ nsplit = int(len(filelist) / NFILE) + 1
 filelist_split = np.array_split(filelist, nsplit)
 
 for index, index_split in enumerate(range(rank, len(filelist_split), size)):
-    fns = filelist_split[index_split].tolist() # need to be fixed...
+    fns = filelist_split[index_split].tolist()
 
     logging.info('{}/{}...'.format(index_split + 1, len(filelist_split)))
     name = os.path.join(args.output_dir, fns[0].split('/')[1])
-    #print("Proc [{}] taking {} ".format(rank, index_split))
 
     r = AlertReader(fns)
 
-    #t1 = time.time()
     pdf = r.to_pandas()
-    #logging.info('tolist: {:.2f}'.format(time.time() - t1))
-
-    #t2 = time.time()
     pdf.to_parquet(name.replace('.avro', '.parquet'))
-    #logging.info('merge: {:.2f}'.format(time.time() - t2))
 
 MPI.COMM_WORLD.barrier()
 if rank == 0:
