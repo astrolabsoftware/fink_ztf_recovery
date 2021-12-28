@@ -1,13 +1,13 @@
 # Building the raw alert data lake
 
-In case things go wrong, keep breathing, and follow instructions. Requirements:
+In case things go wrong, follow instructions. Requirements:
 
 - openmpi
 - aria2c
 - pigz
 - pandas, pyarrow, numpy, fink-client, fastavro, mpi4py...
 
-and have a good internet connection!
+and have a good internet connection! Steps were all done on a 16 cores machine with Centos 7, at the cloud at VirtualData (Université Paris-Saclay).
 
 ## List of observation nights
 
@@ -17,7 +17,7 @@ Go to [https://ztf.uw.edu/alerts/public](https://ztf.uw.edu/alerts/public), and 
 python generate_uri.py
 ```
 
-This will generate a pandas DataFrame from the clipboard, estimate the volume of data to transfer, and save all needed URLs to download data (one per observation night). For convenience, nights will be split by groups of 5, stored in the. folder `uris`.
+This will generate a pandas DataFrame from the clipboard, estimate the volume of data to transfer, and save all needed URLs to download data (one per observation night). For convenience, nights will be split by groups of 5, stored in the folder `uris`.
 
 ## Download observation nights
 
@@ -38,9 +38,9 @@ and the writing on CEPH was quite stable as well:
 
 ## Format files for Apache Spark
 
-The data transfered is a compressed folder (`.tar.gz`) containing Apache Avro files. While this is good for an archive, this is not suitable for our processing. You need then to decompress the files, concatenate the data from individual Avro files into larger chunks, and save into Parquet files. 
+The data transfered is made of compressed folders (`.tar.gz`) containing Apache Avro files. While this is good for an archive, this is not suitable for our processing. You need then to decompress the files, concatenate the data from individual Avro files into larger chunks, and save into Parquet files. 
 
-The de-compression is the slowest operation, and it is difficult to parallelize each task. We managed to slightly speed-up the process by using `pigz` and `tar` instead of `tar` alone (factor of 2 faster). The decompression rate was about 80 MB/s per file.
+The decompression is the slowest operation, and it is difficult to parallelize each task. We managed to slightly speed-up the process by using `pigz` and `tar` instead of `tar` alone (factor of 2 faster). The decompression rate was about 80 MB/s per file.
 
 Once data is decompressed, we obtain one Avro file per alert, and there are hundreds of thousands alerts by folder! This deluge of small files is bad for the processing. Hence, the next operation is to concatenate many alerts at once. In addition, we perform a conversion from Avro to Parquet (the chosen format for internal operations in Fink). By concatenating 3000 raw Avro files into one single Parquet file (with snappy compression), we currently achieve a compression factor of about 1.6. Finally, files are saved into a partitioned structure (`year/month/day`) to speed-up subsequent operations. 
 
